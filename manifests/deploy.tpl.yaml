@@ -1,0 +1,42 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: PLACEHOLDER_NAMESPACE
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-nginx
+spec:
+  selector:
+    app: my-nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: my-nginx
+  labels:
+    app: my-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-nginx
+  template:
+    metadata:
+      labels:
+        app: my-nginx
+    spec:
+      containers:
+        - name: my-nginx
+          # this needs to match the image in dev_run.sh
+          image: PLACEHOLDER_IMAGE_NAME
+          # setting the pull policy to never ensures we use a locally built image
+          imagePullPolicy: PLACEHOLDER_IMAGE_PULL_POLICY
+          ports:
+          - containerPort: 80
